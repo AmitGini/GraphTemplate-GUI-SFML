@@ -124,6 +124,7 @@ namespace ariel {
         }
     }
 
+    //TODO - Edit 
     template <typename T, size_t K>
     bool Tree<T, K>::BFSIterator::operator!=(const BFSIterator& other) const {
         return !queue.empty();
@@ -154,6 +155,7 @@ namespace ariel {
         }
     }
 
+    //TODO - Edit 
     template <typename T, size_t K>
     bool Tree<T, K>::DFSIterator::operator!=(const DFSIterator& other) const {
         return !stack.empty();
@@ -184,6 +186,7 @@ namespace ariel {
         }
     }
 
+    //TODO - Edit 
     template <typename T, size_t K>
     bool Tree<T, K>::PreOrderIterator::operator!=(const PreOrderIterator& other) const {
         return !stack.empty();
@@ -212,11 +215,12 @@ namespace ariel {
         pushLeft(root);
     }
 
+    //TODO - Edit 
     template <typename T, size_t K>
     bool Tree<T, K>::InOrderIterator::operator!=(const InOrderIterator& other) const {
         return !stack.empty();
     }
-
+    
     template <typename T, size_t K>
     const T& Tree<T, K>::InOrderIterator::operator*() const {
         return stack.top()->key;
@@ -244,6 +248,7 @@ namespace ariel {
         pushLeft(root);
     }
 
+    // TODO - Edit 
     template <typename T, size_t K>
     bool Tree<T, K>::PostOrderIterator::operator!=(const PostOrderIterator& other) const {
         return !stack.empty();

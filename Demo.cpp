@@ -32,7 +32,8 @@ int main() {
         std::cout << *it << " ";
     }
     std::cout << std::endl;
-
+    delete &binaryTree;
+    
     Tree<std::string, 3> ternaryTree;
     ternaryTree.add_root("root");
 
@@ -64,5 +65,7 @@ int main() {
         std::cout << *it << " ";
     }
     std::cout << std::endl;
+
+    delete &ternaryTree;
     return 0;
 }

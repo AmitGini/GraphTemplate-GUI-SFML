@@ -61,6 +61,12 @@
         "print": "cpp",
         "__hash_table": "cpp",
         "deque": "cpp",
-        "forward_list": "cpp"
+        "forward_list": "cpp",
+        "iostream": "cpp",
+        "istream": "cpp",
+        "numbers": "cpp",
+        "__node_handle": "cpp",
+        "queue": "cpp",
+        "stack": "cpp"
     }
 }
