@@ -1,18 +1,25 @@
+# Variables
 CXX = g++
-CXXFLAGS = -g -std=c++11 -Wall -Wextra
+CXXFLAGS = -std=c++11 -Wall -I/usr/include/SFML
+LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
-all: tree_demo
+# Target
+TARGET = demo
 
-tree_demo: Demo.o
-	$(CXX) $(CXXFLAGS) Demo.o -o tree_demo
+# Source files
+SRCS = Demo.cpp Tree.cpp Complex.cpp
 
-Demo.o: Demo.cpp Tree.hpp
-	$(CXX) $(CXXFLAGS) -c Demo.cpp
+# Object files
+OBJS = $(SRCS:.cpp=.o)
 
-Tree.o: Tree.cpp Tree.hpp
-	$(CXX) $(CXXFLAGS) -c Tree.cpp
+# Rules
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -o $(TARGET) $(LDFLAGS)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o tree_demo
-
-.PHONY: all clean
+	rm -f $(OBJS) $(TARGET) 

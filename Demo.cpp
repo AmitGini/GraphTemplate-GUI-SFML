@@ -1,71 +1,57 @@
 #include "Tree.hpp"
-#include <string>
+#include "Complex.hpp"
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
 using namespace ariel;
 
 int main() {
-    Tree<int> binaryTree;
-    binaryTree.add_root(1);
+    // Create a binary tree of Complex numbers
+    Tree<Complex> binaryTree;
+    binaryTree.add_root(Complex(1, 1));
 
     auto root = binaryTree.get_root();
-    binaryTree.add_sub_node(root, 2);
-    binaryTree.add_sub_node(root, 3);
+    binaryTree.add_sub_node(root, Complex(2, 2));
+    binaryTree.add_sub_node(root, Complex(3, 3));
 
     auto child1 = root->children[0];
-    binaryTree.add_sub_node(child1, 4);
-    binaryTree.add_sub_node(child1, 5);
+    binaryTree.add_sub_node(child1, Complex(4, 4));
+    binaryTree.add_sub_node(child1, Complex(5, 5));
 
-    std::cout << "Binary Tree:" << std::endl;
-    binaryTree.display();
+    // Create a window to draw the tree
+    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Tree Drawing");
 
-    // Corrected usage of BFS iterator
-    std::cout << "\nBFS Traversal:" << std::endl;
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+        }
+
+        window.clear(sf::Color::Black);
+        binaryTree.draw(window);
+        window.display();
+    }
+
+    // Convert the tree to a min-heap and get a BFS iterator
+    try {
+        auto it = binaryTree.myHeap();
+        std::cout << "\nMin-Heap (BFS):";
+        for (; it != binaryTree.end_bfs(); ++it) {
+            std::cout << " " << *it;
+        }
+        std::cout << std::endl;
+    } catch (const std::invalid_argument& e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+    // Display the tree and BFS traversal
+    std::cout << "Binary Tree (BFS Traversal):" << std::endl;
     for (auto it = binaryTree.begin_bfs(); it != binaryTree.end_bfs(); ++it) {
         std::cout << *it << " ";
     }
     std::cout << std::endl;
 
-    // Corrected usage of DFS iterator
-    std::cout << "\nDFS Traversal:" << std::endl;
-    for (auto it = binaryTree.begin_dfs(); it != binaryTree.end_dfs(); ++it) {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
-    delete &binaryTree;
-    
-    Tree<std::string, 3> ternaryTree;
-    ternaryTree.add_root("root");
-
-    auto ternaryRoot = ternaryTree.get_root();
-    ternaryTree.add_sub_node(ternaryRoot, "child1");
-    ternaryTree.add_sub_node(ternaryRoot, "child2");
-    ternaryTree.add_sub_node(ternaryRoot, "child3");
-
-    auto ternaryChild1 = ternaryRoot->children[0];
-    ternaryTree.add_sub_node(ternaryChild1, "child4");
-
-    std::cout << "\nTernary Tree:" << std::endl;
-    ternaryTree.display();
-
-    // Corrected usage of PreOrder iterator
-    std::cout << "\nPreOrder Traversal:" << std::endl;
-    for (auto it = ternaryTree.begin_preorder(); it != ternaryTree.end_preorder(); ++it) {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "\nPostOrder Traversal:" << std::endl;
-    for (auto it = ternaryTree.begin_postorder(); it != ternaryTree.end_postorder(); ++it) {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
-    std::cout<< "\nInOrder Traversal:" << std::endl;
-    for (auto it = ternaryTree.begin_inorder(); it != ternaryTree.end_inorder(); ++it) {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
-
-    delete &ternaryTree;
     return 0;
 }

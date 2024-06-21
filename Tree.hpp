@@ -5,6 +5,7 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include <SFML/Graphics.hpp>
 
 namespace ariel {
 
@@ -33,6 +34,9 @@ namespace ariel {
         void display() const;  // Display the tree
         Node* get_root() const;  // Get the root node
 
+        // Draw the tree 
+        void draw(sf::RenderWindow& window) const;
+
         // Iterator classes
         class BFSIterator;  // Breadth First Search Iterator
         class DFSIterator;  // Depth First Search Iterator
@@ -40,6 +44,7 @@ namespace ariel {
         class InOrderIterator;  // InOrder Iterator
         class PostOrderIterator;  // PostOrder Iterator
 
+        // Member Function Declarations of the 'Tree' class template
         BFSIterator begin_bfs();  // Begin BFS Iterator
         BFSIterator end_bfs();  // End BFS Iterator
         DFSIterator begin_dfs();  // Begin DFS Iterator
@@ -50,6 +55,9 @@ namespace ariel {
         InOrderIterator end_inorder();  // End InOrder Iterator
         PostOrderIterator begin_postorder();  // Begin PostOrder Iterator
         PostOrderIterator end_postorder();  // End PostOrder Iterator
+
+        // Method to transform the tree into a min-heap and return an iterator
+        typename Tree<T, K>::BFSIterator myHeap(); // Transform tree into a min-heap and return iterator        
         
     private:
         Node* root;  // Root node - field
@@ -59,6 +67,12 @@ namespace ariel {
         
         // Helper functions to clear the tree - delete every node in the Tree.
         void clear(Node* node);
+
+        // Helper function to draw the tree
+        void drawNode(sf::RenderWindow& window, Node* node, sf::Vector2f position, float angle, float distance, int depth) const;
+
+        // Helper function to draw the arrow
+        void drawArrow(sf::RenderWindow& window, sf::Vector2f start, sf::Vector2f end) const;  // Add this line
     };
 
     // Define the BFSIterator class
