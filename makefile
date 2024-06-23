@@ -13,13 +13,19 @@ SRCS = Demo.cpp Tree.cpp Complex.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 # Rules
-all: $(TARGET)
+all: $(TARGET) tests
 
 $(TARGET): $(OBJS)
 	$(CXX) $(OBJS) -o $(TARGET) $(LDFLAGS)
 
+tests: Tree.o Complex.o tests.o
+	$(CXX) Tree.o Complex.o tests.o -o tests $(LDFLAGS)
+
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# Phony targets
+.PHONY: clean all tests
+
 clean:
-	rm -f $(OBJS) $(TARGET) 
+	rm -f $(OBJS) $(TARGET) tests.o tests
