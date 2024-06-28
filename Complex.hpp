@@ -18,22 +18,21 @@ public:
     Complex operator-() const; // Unary minus
 
     // Binary operators
-    Complex operator+(const Complex& other) const;  // Binary plus +
     Complex& operator+=(const Complex& other);  // Plus +=
     Complex& operator-=(const Complex& other);  // Minus -=
     Complex& operator*=(const Complex& other);  // Multiply *=
     Complex& operator++();  // prefix increment
     Complex operator++(int);  // postfix increment
+    Complex operator-(const Complex& other);  // Binary minus - 
+    Complex operator+(const Complex& other);  // Binary minus +
+    Complex operator*(const Complex& other);  // Multiply *
 
     // Comparison operators
     bool operator<(const Complex& other) const;
     bool operator>(const Complex& other) const;
+    bool operator==(const Complex& other);  
+    bool operator!=(const Complex& other);  
 
-    // friend global binary operators
-    friend Complex operator-(const Complex& c1, const Complex& c2);  // global binary minus -
-    friend Complex operator*(const Complex& c1, const Complex& c2);  // global binary multiply *
-    friend bool operator==(const Complex& c1, const Complex& c2);  // global binary equal ==
-    friend bool operator!=(const Complex& c1, const Complex& c2);  // global binary not equal !=
 
     // friend global IO operators
     friend std::ostream& operator<<(std::ostream& output, const Complex& c);  // global output operator

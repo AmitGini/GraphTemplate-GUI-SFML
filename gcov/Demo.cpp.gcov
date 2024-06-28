@@ -1,0 +1,58 @@
+        -:    0:Source:Demo.cpp
+        -:    1:#include "Tree.hpp"
+        -:    2:#include "Complex.hpp"
+        -:    3:#include <iostream>
+        -:    4:#include <SFML/Graphics.hpp>
+        -:    5:
+        -:    6:using namespace ariel;
+        -:    7:
+        1:    8:int main() {
+        -:    9:    // Create a binary tree of Complex numbers
+        1:   10:    Tree<Complex> binaryTree;
+        1:   11:    binaryTree.add_root(Complex(1, 1));
+        -:   12:
+        1:   13:    auto root = binaryTree.get_root();
+        1:   14:    binaryTree.add_sub_node(root, Complex(2, 2));
+        1:   15:    binaryTree.add_sub_node(root, Complex(3, 3));
+        -:   16:
+        1:   17:    auto child1 = root->children[0];
+        1:   18:    binaryTree.add_sub_node(child1, Complex(4, 4));
+        1:   19:    binaryTree.add_sub_node(child1, Complex(5, 5));
+        -:   20:
+        -:   21:    // Create a window to draw the tree
+        1:   22:    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Tree Drawing");
+        -:   23:
+     1289:   24:    while (window.isOpen()) {
+        -:   25:        sf::Event event;
+     1451:   26:        while (window.pollEvent(event)) {
+      163:   27:            if (event.type == sf::Event::Closed) {
+        1:   28:                window.close();
+        -:   29:            }
+        -:   30:        }
+        -:   31:
+     1288:   32:        window.clear(sf::Color::Black);
+     1288:   33:        binaryTree.draw(window);
+     1288:   34:        window.display();
+        -:   35:    }
+        -:   36:
+        -:   37:    // Convert the tree to a min-heap and get a BFS iterator
+        -:   38:    try {
+        1:   39:        auto it = binaryTree.myHeap();
+        1:   40:        std::cout << "\nMin-Heap (BFS):";
+        6:   41:        for (; it != binaryTree.end_bfs(); ++it) {
+        5:   42:            std::cout << " " << *it;
+        -:   43:        }
+        1:   44:        std::cout << std::endl;
+        1:   45:    } catch (const std::invalid_argument& e) {
+    =====:   46:        std::cerr << e.what() << std::endl;
+    =====:   47:    }
+        -:   48:
+        -:   49:    // Display the tree and BFS traversal
+        1:   50:    std::cout << "Binary Tree (BFS Traversal):" << std::endl;
+        6:   51:    for (auto it = binaryTree.begin_bfs(); it != binaryTree.end_bfs(); ++it) {
+        5:   52:        std::cout << *it << " ";
+        1:   53:    }
+        1:   54:    std::cout << std::endl;
+        -:   55:
+        1:   56:    return 0;
+        1:   57:}

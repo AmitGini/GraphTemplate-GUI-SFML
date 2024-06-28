@@ -18,6 +18,72 @@ int main() {
     binaryTree.add_sub_node(child1, Complex(4, 4));
     binaryTree.add_sub_node(child1, Complex(5, 5));
 
+    // Convert the tree to a min-heap and get a BFS iterator
+    try {
+        auto it = binaryTree.myHeap();
+        std::cout << "\nMin-Heap (BFS):";
+        for (; it != binaryTree.end_bfs(); ++it) {
+            std::cout << " " << *it;
+        }
+        std::cout<<"\n" << std::endl;
+    } catch (const std::invalid_argument& e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+    // Display the tree and BFS traversal
+    std::cout << "Binary Tree (BFS Traversal):" << std::endl;
+    for (auto it = binaryTree.begin_bfs(); it != binaryTree.end_bfs(); ++it) {
+        std::cout << *it << std::endl;
+    }
+    std::cout<<"\n" << std::endl;
+
+    std::cout<< "Binary Tree (DFS Traversal):" << std::endl;
+    for (auto it = binaryTree.begin_dfs(); it != binaryTree.end_dfs(); ++it) {
+        std::cout<< *it << std::endl;
+    }
+    std::cout<<"\n" << std::endl;
+
+    std::cout << "Pre-Order Traversal:" << std::endl;
+    for (auto it = binaryTree.begin_pre_order(); it != binaryTree.end_pre_order(); ++it) {
+        std::cout << *it << std::endl;
+    }
+    std::cout<<"\n" << std::endl;
+
+    std::cout<< "In-Order Traversal:" << std::endl;
+    for (auto it = binaryTree.begin_in_order(); it != binaryTree.end_in_order(); ++it) {
+        std::cout << *it << std::endl;
+    }
+    std::cout<<"\n" << std::endl;
+
+    std::cout<< "Post-Order Traversal:" << std::endl;
+    for (auto it = binaryTree.begin_post_order(); it != binaryTree.end_post_order(); ++it) {
+        std::cout << *it << std::endl;
+    }
+
+    try {
+        auto it = binaryTree.myHeap();
+        std::cout << "\nMin-Heap (BFS):" << std::endl;
+        int level = 0;
+        int num_nodes = 1;
+        int printed_nodes = 0;
+        while (it != binaryTree.end_bfs()) {
+            if (printed_nodes == num_nodes) {
+                std::cout << std::endl;
+                level++;
+                num_nodes *= 2;
+                printed_nodes = 0;
+            }
+            std::cout << *it << " ";
+            ++it;
+            printed_nodes++;
+        }
+        std::cout << std::endl;
+    } catch (const std::invalid_argument& e) {
+        std::cerr << e.what() << std::endl;
+    }
+    
+    
+
     // Create a window to draw the tree
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Tree Drawing");
 
@@ -33,25 +99,6 @@ int main() {
         binaryTree.draw(window);
         window.display();
     }
-
-    // Convert the tree to a min-heap and get a BFS iterator
-    try {
-        auto it = binaryTree.myHeap();
-        std::cout << "\nMin-Heap (BFS):";
-        for (; it != binaryTree.end_bfs(); ++it) {
-            std::cout << " " << *it;
-        }
-        std::cout << std::endl;
-    } catch (const std::invalid_argument& e) {
-        std::cerr << e.what() << std::endl;
-    }
-
-    // Display the tree and BFS traversal
-    std::cout << "Binary Tree (BFS Traversal):" << std::endl;
-    for (auto it = binaryTree.begin_bfs(); it != binaryTree.end_bfs(); ++it) {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
 
     return 0;
 }

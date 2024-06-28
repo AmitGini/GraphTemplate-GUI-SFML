@@ -49,12 +49,12 @@ namespace ariel {
         BFSIterator end_bfs();  // End BFS Iterator
         DFSIterator begin_dfs();  // Begin DFS Iterator
         DFSIterator end_dfs();  // End DFS Iterator
-        PreOrderIterator begin_preorder();  // Begin PreOrder Iterator
-        PreOrderIterator end_preorder();  // End PreOrder Iterator
-        InOrderIterator begin_inorder();  // Begin InOrder Iterator
-        InOrderIterator end_inorder();  // End InOrder Iterator
-        PostOrderIterator begin_postorder();  // Begin PostOrder Iterator
-        PostOrderIterator end_postorder();  // End PostOrder Iterator
+        PreOrderIterator begin_pre_order();  // Begin PreOrder Iterator
+        PreOrderIterator end_pre_order();  // End PreOrder Iterator
+        InOrderIterator begin_in_order();  // Begin InOrder Iterator
+        InOrderIterator end_in_order();  // End InOrder Iterator
+        PostOrderIterator begin_post_order();  // Begin PostOrder Iterator
+        PostOrderIterator end_post_order();  // End PostOrder Iterator
 
         // Method to transform the tree into a min-heap and return an iterator
         typename Tree<T, K>::BFSIterator myHeap(); // Transform tree into a min-heap and return iterator        
@@ -105,7 +105,7 @@ namespace ariel {
         std::stack<Node*> stack;  // Stack to store the nodes
     };
 
-    // Define the PreOrderIterator class
+    // PreOrderIterator class - root, left, right
     template <typename T, size_t K>
     class Tree<T, K>::PreOrderIterator {
     public:
@@ -120,7 +120,7 @@ namespace ariel {
         std::stack<Node*> stack;  // Stack to store the nodes
     };
 
-    // Define the InOrderIterator class
+    // InOrderIterator class - left, root, right
     template <typename T, size_t K>
     class Tree<T, K>::InOrderIterator {
     public:
@@ -136,7 +136,7 @@ namespace ariel {
         void pushLeft(Node* node);  // Helper function to push the left nodes to the stack
     };
 
-    // Define the PostOrderIterator class
+    // PostOrderIterator class - left, right, root
     template <typename T, size_t K>
     class Tree<T, K>::PostOrderIterator {
     public:

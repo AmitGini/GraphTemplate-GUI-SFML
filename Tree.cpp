@@ -11,9 +11,11 @@
 
 namespace ariel {
 
+    //Constructor template
     template <typename T, size_t K>
     Tree<T, K>::Tree() : root(nullptr) {}
 
+    //Destructor template
     template <typename T, size_t K>
     Tree<T, K>::~Tree() {
         clear(root);
@@ -79,6 +81,7 @@ namespace ariel {
         delete node;
     }
 
+    // Draw the nodes as circle with the its key represented by string - GUI
     template <typename T, size_t K>
     void Tree<T, K>::drawNode(sf::RenderWindow& window, Node* node, sf::Vector2f position, float angle, float distance, int depth) const
     {
@@ -125,6 +128,7 @@ namespace ariel {
         }
     }
 
+    // Define how to represent the direction of n edge with arrow - GUI
     template <typename T, size_t K>
     void Tree<T, K>::drawArrow(sf::RenderWindow &window, sf::Vector2f start, sf::Vector2f end) const
     {
@@ -156,53 +160,56 @@ namespace ariel {
         window.draw(arrowhead, 4, sf::Lines);
     }
 
+    // Define the begin of BFS - begin in the root of the tree
     template <typename T, size_t K>
     typename Tree<T, K>::BFSIterator Tree<T, K>::begin_bfs() {
         return BFSIterator(root);
     }
 
+    // Define the end of BFS - end when its nullptr
     template <typename T, size_t K>
     typename Tree<T, K>::BFSIterator Tree<T, K>::end_bfs() {
         return BFSIterator(nullptr);
     }
-
+    // Define the begin of DFS - being in the root of the tree
     template <typename T, size_t K>
     typename Tree<T, K>::DFSIterator Tree<T, K>::begin_dfs() {
         return DFSIterator(root);
     }
 
+    // Define the end of DFS - end when its nullptr
     template <typename T, size_t K>
     typename Tree<T, K>::DFSIterator Tree<T, K>::end_dfs() {
         return DFSIterator(nullptr);
     }
 
     template <typename T, size_t K>
-    typename Tree<T, K>::PreOrderIterator Tree<T, K>::begin_preorder() {
+    typename Tree<T, K>::PreOrderIterator Tree<T, K>::begin_pre_order() {
         return PreOrderIterator(root);
     }
 
     template <typename T, size_t K>
-    typename Tree<T, K>::PreOrderIterator Tree<T, K>::end_preorder() {
+    typename Tree<T, K>::PreOrderIterator Tree<T, K>::end_pre_order() {
         return PreOrderIterator(nullptr);
     }
 
     template <typename T, size_t K>
-    typename Tree<T, K>::InOrderIterator Tree<T, K>::begin_inorder() {
+    typename Tree<T, K>::InOrderIterator Tree<T, K>::begin_in_order() {
         return InOrderIterator(root);
     }
 
     template <typename T, size_t K>
-    typename Tree<T, K>::InOrderIterator Tree<T, K>::end_inorder() {
+    typename Tree<T, K>::InOrderIterator Tree<T, K>::end_in_order() {
         return InOrderIterator(nullptr);
     }
 
     template <typename T, size_t K>
-    typename Tree<T, K>::PostOrderIterator Tree<T, K>::begin_postorder() {
+    typename Tree<T, K>::PostOrderIterator Tree<T, K>::begin_post_order() {
         return PostOrderIterator(root);
     }
 
     template <typename T, size_t K>
-    typename Tree<T, K>::PostOrderIterator Tree<T, K>::end_postorder() {
+    typename Tree<T, K>::PostOrderIterator Tree<T, K>::end_post_order() {
         return PostOrderIterator(nullptr);
     }
 
@@ -346,12 +353,13 @@ namespace ariel {
         pushLeft(root);
     }
 
-    //TODO - Edit 
+    //Not equal operator
     template <typename T, size_t K>
     bool Tree<T, K>::InOrderIterator::operator!=(const InOrderIterator& other) const {
         return !stack.empty();
     }
     
+    //Dereference operator
     template <typename T, size_t K>
     const T& Tree<T, K>::InOrderIterator::operator*() const {
         return stack.top()->key;
@@ -361,7 +369,9 @@ namespace ariel {
     typename Tree<T, K>::InOrderIterator& Tree<T, K>::InOrderIterator::operator++() {
         Node* current = stack.top();
         stack.pop();
-        pushLeft(current->children[1]); // Assuming binary tree for InOrder
+        for (size_t i = 1; i < K; ++i) {
+            pushLeft(current->children[i]);
+        }
         return *this;
     }
 
@@ -369,7 +379,7 @@ namespace ariel {
     void Tree<T, K>::InOrderIterator::pushLeft(Node* node) {
         while (node) {
             stack.push(node);
-            node = node->children[0]; // Assuming binary tree for InOrder
+            node = node->children[0];
         }
     }
 
@@ -379,7 +389,6 @@ namespace ariel {
         pushLeft(root);
     }
 
-    // TODO - Edit 
     template <typename T, size_t K>
     bool Tree<T, K>::PostOrderIterator::operator!=(const PostOrderIterator& other) const {
         return !stack.empty();
@@ -390,9 +399,9 @@ namespace ariel {
         return stack.top()->key;
     }
 
+
     template <typename T, size_t K>
-    typename Tree<T, K>::PostOrderIterator& Tree<T, K>::PostOrderIterator::operator++() {
-        Node* current = stack.top();
+    typename Tree<T, K>::PostOrderIterator& Tree<T, K>::PostOrderIterator::operator++() {        Node* current = stack.top();
         stack.pop();
         if (!stack.empty() && stack.top()->children[1] == current) { // Assuming binary tree for PostOrder
             pushLeft(stack.top()->children[1]);
