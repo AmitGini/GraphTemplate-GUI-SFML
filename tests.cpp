@@ -179,10 +179,11 @@ TEST_CASE("Tree BFS Iterator"){
     tree.add_sub_node(root, 3);
     tree.add_sub_node(root, 4);
     auto child1 = root->children[0];
+    tree.add_sub_node(child1, 5);
     tree.add_sub_node(child1, 6);
     tree.add_sub_node(child1, 7);
-    tree.add_sub_node(child1, 8);
     auto it=tree.begin_bfs();
+    CHECK(*it == 1);
     int i = 1;
     for(; it != tree.end_bfs(); ++it){
         CHECK(*it == i);
@@ -190,8 +191,30 @@ TEST_CASE("Tree BFS Iterator"){
     }
     CHECK(!(it != tree.end_bfs()));
 }
-
 TEST_CASE("BinaryTree DFS Iterator") {
+    ariel::Tree<int> tree;
+    tree.add_root(1);
+    auto root = tree.get_root();
+    tree.add_sub_node(tree.get_root(), 2);
+    tree.add_sub_node(tree.get_root(), 3);
+    auto child1 = root->children[0];
+    tree.add_sub_node(child1, 4);
+    tree.add_sub_node(child1, 5);
+    auto it = tree.begin_dfs();
+    CHECK(*it == 1);
+    ++it;
+    CHECK(*it == 2);
+    ++it;
+    CHECK(*it == 4);
+    ++it;
+    CHECK(*it == 5);
+    ++it;
+    CHECK(*it == 3);
+    ++it;
+    CHECK(!(it != tree.end_dfs()));
+}
+
+TEST_CASE("Tree DFS Iterator") {
     ariel::Tree<int, 3> tree;
     tree.add_root(1);
     auto root = tree.get_root();
@@ -204,45 +227,24 @@ TEST_CASE("BinaryTree DFS Iterator") {
     tree.add_sub_node(child1, 8);
 
     auto it = tree.begin_dfs();
-    CHECK(*it == 6); // In a binary tree, the postorder traversal visits the children first, then the root
+    CHECK(*it == 1); 
+    ++it;
+    CHECK(*it == 2);
+    ++it;
+    CHECK(*it == 6);
     ++it;
     CHECK(*it == 7);
     ++it;
     CHECK(*it == 8);
     ++it;
-    CHECK(*it == 2);
-    ++it;
     CHECK(*it == 3);
     ++it;
     CHECK(*it == 4);
-    ++it;
-    CHECK(*it == 1);
     ++it;
     CHECK(!(it != tree.end_dfs()));
 }
 
-TEST_CASE("Tree DFS Iterator") {
-    ariel::Tree<int> tree;
-    tree.add_root(1);
-    auto root = tree.get_root();
-    tree.add_sub_node(tree.get_root(), 2);
-    tree.add_sub_node(tree.get_root(), 3);
-    auto child1 = root->children[0];
-    tree.add_sub_node(child1, 4);
-    tree.add_sub_node(child1, 5);
-    auto it = tree.begin_dfs();
-    CHECK(*it == 4);
-    ++it;
-    CHECK(*it == 5);
-    ++it;
-    CHECK(*it == 2);
-    ++it;
-    CHECK(*it == 3);
-    ++it;
-    CHECK(*it == 1);
-    ++it;
-    CHECK(!(it != tree.end_dfs()));
-}
+
 
 TEST_CASE("BinaryTree PreOrder Iterator") {
     ariel::Tree<int> tree;
@@ -258,11 +260,11 @@ TEST_CASE("BinaryTree PreOrder Iterator") {
     ++it;
     CHECK(*it == 2);
     ++it;
-    CHECK(*it == 3);
-    ++it;
     CHECK(*it == 4);
     ++it;
     CHECK(*it == 5);
+    ++it;
+    CHECK(*it == 3);
     ++it;
     CHECK(!(it != tree.end_pre_order()));
 }
@@ -279,19 +281,19 @@ TEST_CASE("Tree PreOrder Iterator - Need to preform DFS") {
     tree.add_sub_node(child1, 7);
     tree.add_sub_node(child1, 8);
     auto it = tree.begin_pre_order();
-    CHECK(*it == 6); // In a binary tree, the postorder traversal visits the children first, then the root
+    CHECK(*it == 1); 
+    ++it;
+    CHECK(*it == 2);
+    ++it;
+    CHECK(*it == 6);
     ++it;
     CHECK(*it == 7);
     ++it;
     CHECK(*it == 8);
     ++it;
-    CHECK(*it == 2);
-    ++it;
     CHECK(*it == 3);
     ++it;
     CHECK(*it == 4);
-    ++it;
-    CHECK(*it == 1);
     ++it;
     CHECK(!(it != tree.end_pre_order()));
 }
@@ -302,7 +304,7 @@ TEST_CASE("BinaryTree InOrder Iterator") {
     tree.add_sub_node(tree.get_root(), 2);
     tree.add_sub_node(tree.get_root(), 3);
     auto it = tree.begin_in_order();
-    CHECK(*it == 2); // In a binary tree, the inorder traversal visits the left child, then the root, then the right child
+    CHECK(*it == 2); 
     ++it;
     CHECK(*it == 1);
     ++it;
@@ -323,19 +325,19 @@ TEST_CASE("Tree InOrder Iterator - Need to preform DFS") {
     tree.add_sub_node(child1, 7);
     tree.add_sub_node(child1, 8);
     auto it = tree.begin_in_order();
-    CHECK(*it == 6); // In a binary tree, the postorder traversal visits the children first, then the root
+    CHECK(*it == 1); 
+    ++it;
+    CHECK(*it == 2);
+    ++it;
+    CHECK(*it == 6);
     ++it;
     CHECK(*it == 7);
     ++it;
     CHECK(*it == 8);
     ++it;
-    CHECK(*it == 2);
-    ++it;
     CHECK(*it == 3);
     ++it;
     CHECK(*it == 4);
-    ++it;
-    CHECK(*it == 1);
     ++it;
     CHECK(!(it != tree.end_in_order()));
 }
@@ -375,19 +377,19 @@ TEST_CASE("Tree PostOrder Iterator - Need to preform DFS") {
     tree.add_sub_node(child1, 7);
     tree.add_sub_node(child1, 8);
     auto it = tree.begin_post_order();
-    CHECK(*it == 6); // In a binary tree, the postorder traversal visits the children first, then the root
+    CHECK(*it == 1); 
+    ++it;
+    CHECK(*it == 2);
+    ++it;
+    CHECK(*it == 6);
     ++it;
     CHECK(*it == 7);
     ++it;
     CHECK(*it == 8);
     ++it;
-    CHECK(*it == 2);
-    ++it;
     CHECK(*it == 3);
     ++it;
     CHECK(*it == 4);
-    ++it;
-    CHECK(*it == 1);
     ++it;
     CHECK(!(it != tree.end_post_order()));
 }
@@ -404,8 +406,8 @@ TEST_CASE("BinaryTree - myHeap"){
     ariel::Tree<int> tree;
     tree.add_root(2);
     auto root = tree.get_root();
-    tree.add_sub_node(tree.get_root(), 5);
-    tree.add_sub_node(tree.get_root(), 3);
+    tree.add_sub_node(root, 5);
+    tree.add_sub_node(root, 3);
     auto child1 = root->children[0];
     tree.add_sub_node(child1, 8);
     tree.add_sub_node(child1, 7);
@@ -417,11 +419,23 @@ TEST_CASE("BinaryTree - myHeap"){
     tree.add_sub_node(childofChild, 2);
     CHECK_NOTHROW(tree.myHeap());
     auto it = tree.myHeap();
-    int i = 1;
-    for(; it != tree.end_bfs(); ++it){
-        CHECK(*it == i);
-        i++;
-    }
+    CHECK(*it == 1);
+    ++it;
+    CHECK(*it == 2);
+    ++it;
+    CHECK(*it == 3);
+    ++it;
+    CHECK(*it == 2);
+    ++it;
+    CHECK(*it == 7);
+    ++it;
+    CHECK(*it == 4);
+    ++it;
+    CHECK(*it == 6);
+    ++it;
+    CHECK(*it == 8);
+    ++it;
+    CHECK(*it == 5);
 }
 
 TEST_CASE("Tree - myHeap"){
