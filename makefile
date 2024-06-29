@@ -10,9 +10,9 @@ LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 TARGET = Demo
 
 # Object files
-OBJS = Tree.o Complex.o Demo.o
+OBJS = Complex.o Demo.o
 
-TEST_OBJ = Tree.o tests.o
+TEST_OBJ = tests.o
 
 # Rules
 all: $(TARGET) tests
@@ -22,11 +22,8 @@ tree: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CXX) $(OBJS) -o $(TARGET) $(LDFLAGS)
 
-tests: Tree.o Complex.o tests.o
-	$(CXX) Tree.o Complex.o tests.o -o tests $(LDFLAGS)
-
-Tree.o: Tree.cpp Tree.hpp
-	$(CXX) -c Tree.cpp -o Tree.o $(CXXFLAGS)
+tests: Complex.o tests.o
+	$(CXX) Complex.o tests.o -o tests $(LDFLAGS)
 
 Complex.o: Complex.cpp Complex.hpp
 	$(CXX) -c Complex.cpp -o Complex.o $(CXXFLAGS)
@@ -34,7 +31,7 @@ Complex.o: Complex.cpp Complex.hpp
 Demo.o: Demo.cpp Tree.hpp Complex.hpp
 	$(CXX) -c Demo.cpp -o Demo.o $(CXXFLAGS)
 
-tests.o: tests.cpp
+tests.o: tests.cpp Tree.hpp Complex.hpp
 	$(CXX) -c tests.cpp -o tests.o $(CXXFLAGS)
 
 # Phony targets

@@ -99,20 +99,19 @@ bool Complex::operator<(const Complex& other) const {
     return std::hypot(_re, _im) < std::hypot(other._re, other._im);
 }
 
-// >
-// Comparison operators - check if smaller then other using other operators
-bool Complex::operator>(const Complex& other) const {
-    return (this < &other);
-}
-
-// Comparison operators - check equality using the other operators
+// ==
 bool Complex::operator==(const Complex& other) {
-    return (!(this < &other) && !(this > &other));
+    return this->im() == other.im() && this->re() == other.re();
 }
 
-// 
+// >
+bool Complex::operator>(const Complex& other) const {
+    return (!(*this < other) && !(this == &other));
+}
+
+//  !=
 bool Complex::operator!=(const Complex& other) {
-    return !(this == &other);
+    return !(*this == other);
 }
 
 // Friend global IO operators
