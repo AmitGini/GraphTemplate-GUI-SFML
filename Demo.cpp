@@ -22,17 +22,6 @@ int main() {
     binaryTree.add_sub_node(child2, Complex(6, 6));
     binaryTree.add_sub_node(child2, Complex(7, 7));
 
-    // Convert the tree to a min-heap and get a BFS iterator
-    try {
-        auto it = binaryTree.myHeap();
-        std::cout << "\nMin-Heap (BFS):";
-        for (; it != binaryTree.end_bfs(); ++it) {
-            std::cout << " " << *it;
-        }
-        std::cout<<"\n" << std::endl;
-    } catch (const std::invalid_argument& e) {
-        std::cerr << e.what() << std::endl;
-    }
 
     // Display the tree and BFS traversal
     std::cout << "Binary Tree (BFS Traversal):" << std::endl;
@@ -86,22 +75,6 @@ int main() {
         std::cerr << e.what() << std::endl;
     }
 
-    // Create a window to draw the tree
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Tree Drawing");
-
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-        }
-
-        window.clear(sf::Color::Black);
-        binaryTree.draw(window);
-        window.display();
-    }
-
     Tree<int, 3> tree;
     tree.add_root(1);
     tree.add_sub_node(tree.get_root(), 2);
@@ -138,6 +111,36 @@ int main() {
         std::cout << *it << " ";
     }
     std::cout << std::endl;
+
+    // Create a window to draw the tree
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Complex Binary-Tree Drawing");
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+        }
+
+        window.clear(sf::Color::Black);
+        binaryTree.draw(window);
+        window.display();
+    }
+
+    sf::RenderWindow window2(sf::VideoMode(800, 600), "Tree <int, 3> Drawing");
+    while (window2.isOpen()) {
+        sf::Event event;
+        while (window2.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window2.close();
+            }
+        }
+
+        window2.clear(sf::Color::Black);
+        tree.draw(window2);
+        window2.display();
+    }
 
     return 0;
 }

@@ -248,7 +248,7 @@ namespace ariel {
         circle.setFillColor(sf::Color::Blue);
         circle.setPosition(position.x - circle.getRadius(), position.y - circle.getRadius());
         window.draw(circle);
-
+        
         sf::Font font;
         if (!font.loadFromFile("arial.ttf")) {
             std::cerr << "Error loading font\n";
@@ -273,7 +273,7 @@ namespace ariel {
         // Draw all the nodes with the following order: Recursive (Parent Node -> Arrow to Child Node -> Child Node)
         for (size_t i = 0; i < K; ++i) {
             if (node->children[i]) {
-                float childAngle = angle + (i - (K / 2.0f)) * angleIncrement;
+                float childAngle = angle - (i - (K / 2.0f)) * angleIncrement;
                 float rad = childAngle * 3.14159265359 / 180.0f;
                 sf::Vector2f new_position = position + sf::Vector2f(cos(rad) * distance, sin(rad) * distance);
 
