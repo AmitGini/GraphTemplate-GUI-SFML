@@ -88,3 +88,13 @@ int main() {
 
     return 0;
 }
+```
+## Installation
+
+1. Install SFML library:
+   ```sudo apt-get install libsfml-dev
+   git clone https://github.com/AmitGini/GraphTemplate-GUI-SFML.git
+    cd https://github.com/AmitGini/GraphTemplate-GUI-SFML.git
+   make all
+   ```
+
