@@ -1,8 +1,6 @@
 # Variables
-CXX = clang++
+CXX = g++
 # With Coverage falgs
-#CXXFLAGS = -std=c++11 -Wall -I/usr/include/SFML -fprofile-arcs -ftest-coverage
-#LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -fprofile-arcs -ftest-coverage
 CXXFLAGS = -std=c++11 -Wall -I/usr/include/SFML
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
