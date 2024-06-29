@@ -87,7 +87,7 @@ namespace ariel {
         BFSIterator& operator++();      // Increment operator
 
     private:
-        std::queue<Node*> queue; // Queue to store the nodes
+        std::queue<Node*> queue; // Queue to store the nodes according to BFS
     };
 
     // Define the DFSIterator class
@@ -95,14 +95,20 @@ namespace ariel {
     class Tree<T, K>::DFSIterator {
     public:
         DFSIterator(Node* root);  // DFSIterator constructor
+        DFSIterator() // Default constructor
+        {
+            current = nullptr;
+        }
 
         // Overloaded operators
         bool operator!=(const DFSIterator& other) const;  // Not equal operator
         const T& operator*() const;  // Dereference operator
         DFSIterator& operator++();  // Increment operator
+        std::stack<Node*> getStack() const; // Method to access the stack (needed for conversion constructors)
 
     private:
-        std::stack<Node*> stack;  // Stack to store the nodes
+        std::stack<Node*> stack;  // Stack to store the nodes according to DFS
+        Node* current;  // Current node
     };
 
     // PreOrderIterator class - root, left, right
@@ -117,7 +123,8 @@ namespace ariel {
         PreOrderIterator& operator++();  // Increment operator
 
     private:
-        std::stack<Node*> stack;  // Stack to store the nodes
+        std::stack<Node*> stack;  // Stack to store the nodes according to Pre-Order
+        DFSIterator dfs;  // DFSIterator object
     };
 
     // InOrderIterator class - left, root, right
@@ -132,8 +139,9 @@ namespace ariel {
         InOrderIterator& operator++();  // Increment operator
 
     private:
-        std::stack<Node*> stack;  // Stack to store the nodes
-        void pushLeft(Node* node);  // Helper function to push the left nodes to the stack
+        std::stack<Node*> stack;  // Stack to store the nodes according to InOrder
+        DFSIterator dfs;  // DFSIterator object
+        void pushLeft(Node* node);  // Helper function to arrange the nodes in the stack
     };
 
     // PostOrderIterator class - left, right, root
@@ -149,6 +157,7 @@ namespace ariel {
 
     private:
         std::stack<Node*> stack;  // Stack to store the nodes
+        DFSIterator dfs;  // DFSIterator object
         void pushLeft(Node* node);  // Helper function to push the left nodes to the stack
 
     };

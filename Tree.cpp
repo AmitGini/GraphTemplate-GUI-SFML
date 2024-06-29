@@ -183,36 +183,44 @@ namespace ariel {
         return DFSIterator(nullptr);
     }
 
+    // Define the begin of PreOrder - begin in the root of the tree
     template <typename T, size_t K>
     typename Tree<T, K>::PreOrderIterator Tree<T, K>::begin_pre_order() {
         return PreOrderIterator(root);
     }
 
+    // Define the end of PreOrder - end when its nullptr
     template <typename T, size_t K>
     typename Tree<T, K>::PreOrderIterator Tree<T, K>::end_pre_order() {
         return PreOrderIterator(nullptr);
     }
 
+    // Define the begin of InOrder - begin in the root of the tree
     template <typename T, size_t K>
     typename Tree<T, K>::InOrderIterator Tree<T, K>::begin_in_order() {
         return InOrderIterator(root);
     }
 
+    // Define the end of InOrder - end when its nullptr
     template <typename T, size_t K>
     typename Tree<T, K>::InOrderIterator Tree<T, K>::end_in_order() {
         return InOrderIterator(nullptr);
     }
 
+    // Define the begin of PostOrder - begin in the root of the tree
     template <typename T, size_t K>
     typename Tree<T, K>::PostOrderIterator Tree<T, K>::begin_post_order() {
         return PostOrderIterator(root);
     }
 
+    // Define the end of PostOrder - end when its nullptr
     template <typename T, size_t K>
     typename Tree<T, K>::PostOrderIterator Tree<T, K>::end_post_order() {
         return PostOrderIterator(nullptr);
     }
 
+    // insert the tree data to a vector and use make_heap to get iterator of min-heap
+    // rebuild the tree a minimum heap and return iterator of BFS of the new tree
     template <typename T, size_t K>
     typename Tree<T, K>::BFSIterator Tree<T, K>::myHeap()
     {
@@ -254,15 +262,14 @@ namespace ariel {
         return this->begin_bfs();  // Return BFS iterator to the minimum heap
     }
 
-    // BFSIterator implementation
+    // BFSIterator - root, left, right
     template <typename T, size_t K>
     Tree<T, K>::BFSIterator::BFSIterator(Node* root) {
         if (root) {
             queue.push(root);
         }
     }
-
-    //TODO - Edit 
+ 
     template <typename T, size_t K>
     bool Tree<T, K>::BFSIterator::operator!=(const BFSIterator& other) const {
         return !queue.empty();
@@ -285,15 +292,14 @@ namespace ariel {
         return *this;
     }
 
-    // DFSIterator implementation
+    // DFSIterator
     template <typename T, size_t K>
     Tree<T, K>::DFSIterator::DFSIterator(Node* root) {
         if (root) {
             stack.push(root);
         }
     }
-
-    //TODO - Edit 
+ 
     template <typename T, size_t K>
     bool Tree<T, K>::DFSIterator::operator!=(const DFSIterator& other) const {
         return !stack.empty();
@@ -316,15 +322,28 @@ namespace ariel {
         return *this;
     }
 
-    // PreOrderIterator implementation
+    // Method to access the stack
+    template <typename T, size_t K>
+    std::stack<typename Tree<T, K>::Node*> Tree<T, K>::DFSIterator::getStack() const {
+        return stack;
+    }
+
+    // PreOrderIterator - root, left, right
     template <typename T, size_t K>
     Tree<T, K>::PreOrderIterator::PreOrderIterator(Node* root) {
         if (root) {
-            stack.push(root);
+            if(K == 2){
+                stack.push(root);
+            }
+            else{
+                dfs = DFSIterator(root);
+                stack = dfs.getStack();
+            }
+        }else{
+            root = nullptr;
         }
     }
 
-    //TODO - Edit 
     template <typename T, size_t K>
     bool Tree<T, K>::PreOrderIterator::operator!=(const PreOrderIterator& other) const {
         return !stack.empty();
@@ -339,7 +358,7 @@ namespace ariel {
     typename Tree<T, K>::PreOrderIterator& Tree<T, K>::PreOrderIterator::operator++() {
         Node* current = stack.top();
         stack.pop();
-        for (size_t i = K; i-- > 0;) {
+        for (size_t i = K; i-- > 0;) {  // Push children left to right
             if (current->children[i]) {
                 stack.push(current->children[i]);
             }
@@ -347,10 +366,20 @@ namespace ariel {
         return *this;
     }
 
-    // InOrderIterator implementation
+    // InOrderIterator - left, root, right
     template <typename T, size_t K>
     Tree<T, K>::InOrderIterator::InOrderIterator(Node* root) {
-        pushLeft(root);
+        if(root){
+            if(K == 2){
+                pushLeft(root);  // init the stack with the left nodes
+            }
+            else{
+                dfs = DFSIterator(root);
+                stack = dfs.getStack();
+            }
+        }else{
+            root = nullptr;
+        }
     }
 
     //Not equal operator
@@ -367,58 +396,89 @@ namespace ariel {
 
     template <typename T, size_t K>
     typename Tree<T, K>::InOrderIterator& Tree<T, K>::InOrderIterator::operator++() {
-        Node* current = stack.top();
-        stack.pop();
-        for (size_t i = 1; i < K; ++i) {
-            pushLeft(current->children[i]);
+        if(K == 2){
+            Node* current = stack.top();
+            stack.pop();
+            pushLeft(current->children[1]);  // push the right child of the node
+        }
+        else{
+            ++dfs;
+            stack = dfs.getStack();
         }
         return *this;
     }
 
     template <typename T, size_t K>
     void Tree<T, K>::InOrderIterator::pushLeft(Node* node) {
-        while (node) {
+        while (node) { 
             stack.push(node);
-            node = node->children[0];
+            node = node->children[0]; // go to the left most node
         }
     }
 
-    // PostOrderIterator implementation
+    // PostOrderIterator - left, right, root
     template <typename T, size_t K>
     Tree<T, K>::PostOrderIterator::PostOrderIterator(Node* root) {
-        pushLeft(root);
+        if(root){
+            if(K == 2){ // if K is 2, run pushLeft to create stack in post-order
+                pushLeft(root);
+            
+            }else{  // if K is not 2, use DFSIterator to create stack in DFS order
+                dfs = DFSIterator(root);
+                stack = dfs.getStack();
+            }
+
+        }else{
+            root = nullptr;
+        }
     }
 
+    // Not equal operator - true if the stack is not empty
     template <typename T, size_t K>
     bool Tree<T, K>::PostOrderIterator::operator!=(const PostOrderIterator& other) const {
         return !stack.empty();
     }
 
+    // Dereference operator - return the key of the top node in the stack
     template <typename T, size_t K>
     const T& Tree<T, K>::PostOrderIterator::operator*() const {
         return stack.top()->key;
     }
 
-
+    // Increment operator - pop the top node in the stack
     template <typename T, size_t K>
-    typename Tree<T, K>::PostOrderIterator& Tree<T, K>::PostOrderIterator::operator++() {        Node* current = stack.top();
-        stack.pop();
-        if (!stack.empty() && stack.top()->children[1] == current) { // Assuming binary tree for PostOrder
-            pushLeft(stack.top()->children[1]);
+    typename Tree<T, K>::PostOrderIterator& Tree<T, K>::PostOrderIterator::operator++() {
+        if(K == 2){
+            stack.pop();
+        }else{
+            ++dfs;
+            stack = dfs.getStack();
         }
         return *this;
     }
 
+    // Helper function to push nodes in post-order
     template <typename T, size_t K>
     void Tree<T, K>::PostOrderIterator::pushLeft(Node* node) {
-        while (node) {
-            if (node->children[1]) { // Assuming binary tree for PostOrder
-                stack.push(node->children[1]);
+        std::stack<Node*> tempStack;
+        tempStack.push(node);
+        
+        while (!tempStack.empty()) {
+            Node* current = tempStack.top();
+            tempStack.pop();
+            stack.push(current);
+
+            // Push children to the temporary stack
+            for (size_t i = 0; i < K; ++i) {
+                if (current->children[i]) {
+                    tempStack.push(current->children[i]);
+                }
             }
-            stack.push(node);
-            node = node->children[0]; // Assuming binary tree for PostOrder
         }
+
     }
 }
+
+
 
 #endif 

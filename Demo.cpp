@@ -18,6 +18,10 @@ int main() {
     binaryTree.add_sub_node(child1, Complex(4, 4));
     binaryTree.add_sub_node(child1, Complex(5, 5));
 
+    auto child2 = root->children[1];
+    binaryTree.add_sub_node(child2, Complex(6, 6));
+    binaryTree.add_sub_node(child2, Complex(7, 7));
+
     // Convert the tree to a min-heap and get a BFS iterator
     try {
         auto it = binaryTree.myHeap();
@@ -81,8 +85,6 @@ int main() {
     } catch (const std::invalid_argument& e) {
         std::cerr << e.what() << std::endl;
     }
-    
-    
 
     // Create a window to draw the tree
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Tree Drawing");
@@ -99,6 +101,43 @@ int main() {
         binaryTree.draw(window);
         window.display();
     }
+
+    Tree<int, 3> tree;
+    tree.add_root(1);
+    tree.add_sub_node(tree.get_root(), 2);
+    tree.add_sub_node(tree.get_root(), 3);
+    tree.add_sub_node(tree.get_root(), 4);
+    tree.add_sub_node(tree.get_root()->children[0], 5);
+    tree.add_sub_node(tree.get_root()->children[1], 6);
+    tree.add_sub_node(tree.get_root()->children[1], 7);
+    tree.add_sub_node(tree.get_root()->children[2], 8);
+    tree.add_sub_node(tree.get_root()->children[2], 9);
+    tree.add_sub_node(tree.get_root()->children[2], 10);
+    
+    std::cout<<"Tree K=3 DFS:"<< std::endl;
+    for(auto it = tree.begin_dfs(); it != tree.end_dfs(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    // All printing should be in the same order as the DFS iterator
+    std::cout <<"Tree K=3 In-Order:"<< std::endl;
+    for(auto it = tree.begin_in_order(); it != tree.end_in_order(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout<<"Tree K=3 Pre-Order:"<< std::endl;
+    for(auto it = tree.begin_pre_order(); it != tree.end_pre_order(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout<<"Tree K=3 Post-Order:"<< std::endl;
+    for(auto it = tree.begin_post_order(); it != tree.end_post_order(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
 
     return 0;
 }
