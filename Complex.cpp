@@ -101,17 +101,17 @@ bool Complex::operator<(const Complex& other) const {
 
 // ==
 bool Complex::operator==(const Complex& other) {
-    return this->im() == other.im() && this->re() == other.re();
+    return this->im() == other.im() && this->re() == other.re();  // check imaginary and real parts equality
 }
 
 // >
 bool Complex::operator>(const Complex& other) const {
-    return (!(*this < other) && !(this == &other));
+    return (!(*this < other) && !(this == &other)); // using NOT(<) and NOT(==) operators
 }
 
 //  !=
 bool Complex::operator!=(const Complex& other) {
-    return !(*this == other);
+    return !(*this == other); // using NOT(==) operator
 }
 
 // Friend global IO operators
@@ -138,10 +138,11 @@ std::istream& operator>>(std::istream& input, Complex& c) {
             c._re = re;
             c._im = -im;
         } else {
-            input.setstate(std::ios::failbit);
+            // set the failbit state if the input is invalid
+            input.setstate(std::ios::failbit); // not + - chars as expected
         }
     } else {
-        input.setstate(std::ios::failbit);
+        input.setstate(std::ios::failbit);  // not i char as expected
     }
 
     return input;
