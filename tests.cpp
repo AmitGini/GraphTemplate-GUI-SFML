@@ -467,6 +467,59 @@ TEST_CASE("Tree Display") {
     tree.add_sub_node(child3, 11);
     tree.add_sub_node(child3, 12);
     tree.add_sub_node(child3, 13);
-    CHECK_NOTHROW(tree.display());
+    CHECK_NOTHROW(tree.display());  // check No exception is thrown (display and displayHelper functions)
+
+    sf::RenderWindow window2(sf::VideoMode(800, 600), "Tree <int, 3> Drawing");
+    while (window2.isOpen()) {
+        sf::Event event;
+        while (window2.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window2.close();
+            }
+        }
+
+        window2.clear(sf::Color::Black);
+        CHECK_NOTHROW(tree.draw(window2)); // check No exception is thrown (draw and drawNode and DrawArrow functions)
+        window2.display();
+    }
+}
+
+TEST_CASE("Binary Tree - Constructor and Destructor "){
+    ariel::Tree<int>* tree = new ariel::Tree<int>();
+    tree->add_root(1);
+    auto root = tree->get_root();
+    tree->add_sub_node(root, 2);
+    tree->add_sub_node(root, 3);
+    auto child1 = root->children[0];
+    tree->add_sub_node(child1, 6);
+    tree->add_sub_node(child1, 7);
+    auto child2 = root->children[1];
+    tree->add_sub_node(child2, 8);
+    delete tree;    
+}
+
+TEST_CASE("Tree - Constructor and Destructor K = 3"){
+    ariel::Tree<int,3>* tree = new ariel::Tree<int,3>();
+    tree->add_root(1);
+    auto root = tree->get_root();
+    tree->add_sub_node(root, 2);
+    tree->add_sub_node(root, 3);
+    tree->add_sub_node(root, 4);
+    auto child1 = root->children[0];
+    tree->add_sub_node(child1, 6);
+    tree->add_sub_node(child1, 7);
+    auto child2 = root->children[1];
+    tree->add_sub_node(child2, 8);
+    delete tree;    
+}
+
+TEST_CASE("Tree K=2 Try insert 3 Childrens"){
+    ariel::Tree<int>* tree = new ariel::Tree<int>();
+    tree->add_root(1);
+    auto root = tree->get_root();
+    tree->add_sub_node(root, 2);
+    tree->add_sub_node(root, 3);
+    CHECK_THROWS(tree->add_sub_node(root, 4));
+    delete tree;    
 }
 
